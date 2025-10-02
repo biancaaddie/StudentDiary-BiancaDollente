@@ -1,3 +1,4 @@
+//Interface for diary service operations 
 using StudentDiary.Services.DTOs;
 
 namespace StudentDiary.Services.Interfaces
