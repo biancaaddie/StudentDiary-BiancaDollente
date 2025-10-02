@@ -1,3 +1,5 @@
+//Interfaces/IAuthService.cs 
+
 using StudentDiary.Services.DTOs;
 
 namespace StudentDiary.Services.Interfaces
