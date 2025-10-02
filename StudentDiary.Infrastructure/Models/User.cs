@@ -36,8 +36,8 @@ namespace StudentDiary.Infrastructure.Models
         public string PasswordResetToken { get; set; }
         
         public DateTime? PasswordResetTokenExpiry { get; set; }
-        
-        // Navigation property
+
+        //Navigation Property
         public virtual ICollection<DiaryEntry> DiaryEntries { get; set; } = new List<DiaryEntry>();
     }
 }
