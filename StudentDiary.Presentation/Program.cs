@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure Entity Framework
+// Configure EF Core and DI
 builder.Services.AddDbContext<StudentDiaryContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
