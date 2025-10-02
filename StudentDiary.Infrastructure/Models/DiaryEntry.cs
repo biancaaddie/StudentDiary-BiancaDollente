@@ -11,16 +11,16 @@ namespace StudentDiary.Infrastructure.Models
         public string Title { get; set; }
         
         [Required]
-        public string Content { get; set; } // Rich text content
+        public string Content { get; set; }
         
         public DateTime CreatedDate { get; set; }
         
         public DateTime LastModifiedDate { get; set; }
         
-        // Foreign key
+        // Foreign Key to User
         public int UserId { get; set; }
         
-        // Navigation property
+        // Navigation Property
         public virtual User User { get; set; }
     }
 }
