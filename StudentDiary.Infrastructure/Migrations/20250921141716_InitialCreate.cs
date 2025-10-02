@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
-
+//Generate InitialCreate migration
 namespace StudentDiary.Infrastructure.Migrations
 {
     /// <inheritdoc />
