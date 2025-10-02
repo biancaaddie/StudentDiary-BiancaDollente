@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 //Generate InitialCreate migration
+//Configure unique indexes and cascade delete
 namespace StudentDiary.Infrastructure.Migrations
 {
     /// <inheritdoc />
