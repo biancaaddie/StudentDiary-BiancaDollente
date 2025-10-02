@@ -16,7 +16,7 @@ namespace StudentDiary.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             
-            // User configuration
+            // User Configuration
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -25,14 +25,14 @@ namespace StudentDiary.Infrastructure.Data
                 entity.Property(e => e.DateCreated).HasDefaultValueSql("datetime('now')");
             });
             
-            // DiaryEntry configuration
+            // DiaryEntry Configuration
             modelBuilder.Entity<DiaryEntry>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("datetime('now')");
                 entity.Property(e => e.LastModifiedDate).HasDefaultValueSql("datetime('now')");
                 
-                // Configure relationship
+                // Configure Relationship
                 entity.HasOne(d => d.User)
                       .WithMany(u => u.DiaryEntries)
                       .HasForeignKey(d => d.UserId)
