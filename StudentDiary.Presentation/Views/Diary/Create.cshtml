@@ -116,20 +116,38 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     
-    <!-- TinyMCE Rich Text Editor - will be integrated in next step -->
+    <!-- TinyMCE Rich Text Editor -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-        // Basic form enhancement until TinyMCE is added
         document.addEventListener('DOMContentLoaded', function() {
             const titleInput = document.getElementById('Title');
-            const contentTextarea = document.getElementById('Content');
             
-            // Auto-resize textarea
-            if (contentTextarea) {
-                contentTextarea.addEventListener('input', function() {
-                    this.style.height = 'auto';
-                    this.style.height = this.scrollHeight + 'px';
-                });
-            }
+            // Initialize TinyMCE
+            tinymce.init({
+                selector: '#Content',
+                height: 400,
+                menubar: false,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons'
+                ],
+                toolbar: 'undo redo | blocks | bold italic underline strikethrough | ' +
+                        'alignleft aligncenter alignright alignjustify | ' +
+                        'bullist numlist outdent indent | removeformat | help | ' +
+                        'link image | emoticons | code preview fullscreen',
+                content_style: 'body { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; line-height: 1.6; }',
+                skin: 'oxide',
+                content_css: 'default',
+                branding: false,
+                promotion: false,
+                setup: function (editor) {
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                },
+                placeholder: 'Start writing your thoughts here...'
+            });
             
             // Character counter for title
             if (titleInput) {
