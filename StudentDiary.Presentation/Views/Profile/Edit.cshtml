@@ -131,47 +131,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        // Add form validation enhancement
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
-            
-            // Add visual feedback for form validation
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    validateField(this);
-                });
-                
-                input.addEventListener('input', function() {
-                    if (this.classList.contains('is-invalid')) {
-                        validateField(this);
-                    }
-                });
-            });
-            
-            function validateField(field) {
-                const value = field.value.trim();
-                const isRequired = field.hasAttribute('required') || field.type === 'email';
-                
-                if (isRequired && !value) {
-                    field.classList.add('is-invalid');
-                    field.classList.remove('is-valid');
-                } else if (field.type === 'email' && value && !isValidEmail(value)) {
-                    field.classList.add('is-invalid');
-                    field.classList.remove('is-valid');
-                } else if (value) {
-                    field.classList.remove('is-invalid');
-                    field.classList.add('is-valid');
-                } else {
-                    field.classList.remove('is-invalid', 'is-valid');
-                }
-            }
-            
-            function isValidEmail(email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailRegex.test(email);
-            }
-        });
-    </script>
 }
