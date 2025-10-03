@@ -1,0 +1,187 @@
+@model StudentDiary.Services.DTOs.UpdateDiaryEntryDto
+
+@{
+    ViewData["Title"] = "Edit Diary Entry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">
+                    <i class="fas fa-edit"></i> Edit Diary Entry
+                </h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    <i class="fas fa-info-circle"></i> 
+                    Make any changes you'd like to your diary entry. Your changes will be saved when you click "Update Entry".
+                </p>
+                
+                <form asp-action="Edit" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    
+                    <!-- Hidden ID field -->
+                    <input asp-for="Id" type="hidden" />
+                    
+                    <div class="mb-4">
+                        <label asp-for="Title" class="form-label">
+                            <i class="fas fa-heading"></i> Entry Title
+                        </label>
+                        <input asp-for="Title" class="form-control form-control-lg" 
+                               placeholder="Give your entry a meaningful title..." 
+                               maxlength="200" autofocus />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                        <small class="form-text text-muted">
+                            Update the title to reflect any changes in your entry.
+                        </small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Content" class="form-label">
+                            <i class="fas fa-align-left"></i> Your Story
+                        </label>
+                        <textarea asp-for="Content" class="form-control rich-text-editor" 
+                                  rows="15" 
+                                  placeholder="Update your thoughts here..."></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                        <small class="form-text text-muted">
+                            Feel free to add, modify, or reorganize your thoughts.
+                        </small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-warning btn-lg">
+                                    <i class="fas fa-save"></i> Update Entry
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-grid">
+                                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-lg">
+                                    <i class="fas fa-eye"></i> View Entry
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-grid">
+                                <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="text-warning mb-3">
+                        <i class="fas fa-history"></i> Editing History
+                    </h6>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> 
+                                <strong>Tip:</strong> When you update an entry, we'll record the modification time 
+                                so you can see when you last edited it. The original creation date remains unchanged.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-3 text-center">
+            <a asp-action="Index" class="text-decoration-none me-3">
+                <i class="fas fa-arrow-left"></i> Back to My Diary
+            </a>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="text-decoration-none">
+                <i class="fas fa-eye"></i> View Entry
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <!-- TinyMCE Rich Text Editor - will be integrated in next step -->
+    <script>
+        // Basic form enhancement until TinyMCE is added
+        document.addEventListener('DOMContentLoaded', function() {
+            const titleInput = document.getElementById('Title');
+            const contentTextarea = document.getElementById('Content');
+            
+            // Auto-resize textarea
+            if (contentTextarea) {
+                // Set initial height based on content
+                contentTextarea.style.height = 'auto';
+                contentTextarea.style.height = contentTextarea.scrollHeight + 'px';
+                
+                contentTextarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+                });
+            }
+            
+            // Character counter for title
+            if (titleInput) {
+                const maxLength = titleInput.getAttribute('maxlength');
+                const counterDiv = document.createElement('div');
+                counterDiv.className = 'text-muted small text-end mt-1';
+                titleInput.parentNode.appendChild(counterDiv);
+                
+                function updateCounter() {
+                    const remaining = maxLength - titleInput.value.length;
+                    counterDiv.textContent = `${titleInput.value.length}/${maxLength} characters`;
+                    
+                    if (remaining < 20) {
+                        counterDiv.className = 'text-warning small text-end mt-1';
+                    } else {
+                        counterDiv.className = 'text-muted small text-end mt-1';
+                    }
+                }
+                
+                titleInput.addEventListener('input', updateCounter);
+                updateCounter();
+            }
+        });
+    </script>
+}
+
+<style>
+    .card {
+        border-radius: 15px;
+    }
+    
+    .btn {
+        border-radius: 25px;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+    }
+    
+    .rich-text-editor {
+        min-height: 300px;
+        resize: vertical;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+    
+    .input-group-text {
+        background: transparent;
+        border-right: none;
+    }
+    
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        border-color: #ffc107;
+    }
+</style>

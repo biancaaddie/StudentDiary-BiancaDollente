@@ -1,0 +1,169 @@
+@model StudentDiary.Services.DTOs.DiaryEntryDto
+
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-1">
+                            <i class="fas fa-book-open"></i> @Model.Title
+                        </h4>
+                        <small class="opacity-75">
+                            <i class="fas fa-calendar"></i> 
+                            Created: @Model.CreatedDate.ToString("MMMM dd, yyyy 'at' h:mm tt")
+                        </small>
+                    </div>
+                    <div class="text-end">
+                        @if (Model.LastModifiedDate != Model.CreatedDate)
+                        {
+                            <small class="opacity-75">
+                                <i class="fas fa-edit"></i> 
+                                Last updated:<br>@Model.LastModifiedDate.ToString("MMM dd, yyyy 'at' h:mm tt")
+                            </small>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="entry-content">
+                    @Html.Raw(Model.Content)
+                </div>
+            </div>
+            <div class="card-footer bg-light">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i> 
+                            Entry #@Model.Id | Word count: ~@Model.Content.Split(' ').Length words
+                        </small>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="btn-group" role="group">
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-heart fa-2x text-danger mb-3"></i>
+                            <h6>Reflection Space</h6>
+                            <p class="text-muted small mb-0">
+                                Take a moment to reflect on this entry. How do you feel reading it now?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-share-alt fa-2x text-primary mb-3"></i>
+                            <h6>Share Your Thoughts</h6>
+                            <p class="text-muted small mb-0">
+                                Consider adding more to this story or creating a follow-up entry.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <div class="btn-group" role="group">
+                <a asp-action="Index" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Back to My Diary
+                </a>
+                <a asp-action="Create" class="btn btn-outline-primary">
+                    <i class="fas fa-plus"></i> New Entry
+                </a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">
+                    <i class="fas fa-edit"></i> Edit This Entry
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+    }
+    
+    .btn {
+        border-radius: 25px;
+    }
+    
+    .entry-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        font-family: 'Georgia', 'Times New Roman', serif;
+        color: #333;
+        padding: 1rem 0;
+        min-height: 200px;
+    }
+    
+    .entry-content p {
+        margin-bottom: 1.2rem;
+    }
+    
+    .entry-content h1,
+    .entry-content h2,
+    .entry-content h3,
+    .entry-content h4,
+    .entry-content h5,
+    .entry-content h6 {
+        color: #495057;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .entry-content blockquote {
+        border-left: 4px solid #dee2e6;
+        padding-left: 1rem;
+        margin-left: 0;
+        font-style: italic;
+        color: #6c757d;
+    }
+    
+    .entry-content ul,
+    .entry-content ol {
+        padding-left: 2rem;
+    }
+    
+    .entry-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin: 1rem 0;
+    }
+    
+    .btn-group .btn {
+        border-radius: 0;
+    }
+    
+    .btn-group .btn:first-child {
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+    }
+    
+    .btn-group .btn:last-child {
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+</style>
