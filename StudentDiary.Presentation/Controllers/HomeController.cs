@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using StudentDiary.Presentation.Models;
+using StudentDiary.Presentation.Helpers;
 
 namespace StudentDiary.Presentation.Controllers;
 
@@ -15,6 +16,13 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // Redirect authenticated users to their diary
+        if (AuthenticationHelper.IsAuthenticated(HttpContext))
+        {
+            return RedirectToAction("Index", "Diary");
+        }
+        
+        // Show landing page for non-authenticated users
         return View();
     }
 
