@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Access Denied";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="text-center">
+            <div class="mb-4">
+                <i class="fas fa-ban text-danger" style="font-size: 5rem;"></i>
+            </div>
+            <h1 class="display-4 text-danger mb-4">Access Denied</h1>
+            <p class="lead text-muted mb-4">
+                You don't have permission to access this resource.
+            </p>
+        </div>
+        
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    <i class="fas fa-exclamation-triangle text-warning"></i> 
+                    What happened?
+                </h5>
+                <p class="card-text text-muted mb-4">
+                    This could happen for several reasons:
+                </p>
+                <ul class="list-unstyled text-start mb-4">
+                    <li><i class="fas fa-check-circle text-info"></i> You're not logged in to your account</li>
+                    <li><i class="fas fa-check-circle text-info"></i> Your session may have expired</li>
+                    <li><i class="fas fa-check-circle text-info"></i> You're trying to access content that belongs to another user</li>
+                    <li><i class="fas fa-check-circle text-info"></i> The resource you're looking for might not exist</li>
+                </ul>
+                
+                <div class="d-grid gap-2 d-md-block">
+                    @if (ViewBag.CurrentUser != null)
+                    {
+                        <a asp-controller="Diary" asp-action="Index" class="btn btn-primary">
+                            <i class="fas fa-book"></i> Go to My Diary
+                        </a>
+                        <a asp-controller="Profile" asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-user"></i> My Profile
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Auth" asp-action="Login" class="btn btn-success">
+                            <i class="fas fa-sign-in-alt"></i> Sign In
+                        </a>
+                        <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-primary">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </a>
+                    }
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5 text-center">
+            <small class="text-muted">
+                <i class="fas fa-question-circle"></i> 
+                If you believe this is an error, please contact support or try logging in again.
+            </small>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+    
+    .card-body {
+        padding: 2rem;
+    }
+    
+    .btn {
+        border-radius: 25px;
+        padding: 0.5rem 1.5rem;
+    }
+    
+    .list-unstyled li {
+        padding: 0.25rem 0;
+    }
+    
+    .list-unstyled li i {
+        margin-right: 0.5rem;
+    }
+</style>
