@@ -1,0 +1,192 @@
+@model StudentDiary.Services.DTOs.CreateDiaryEntryDto
+
+@{
+    ViewData["Title"] = "New Diary Entry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-pen"></i> New Diary Entry
+                </h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    <i class="fas fa-lightbulb"></i> 
+                    Write about your day, thoughts, experiences, or anything that comes to mind. 
+                    This is your private space to express yourself freely.
+                </p>
+                
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="Title" class="form-label">
+                            <i class="fas fa-heading"></i> Entry Title
+                        </label>
+                        <input asp-for="Title" class="form-control form-control-lg" 
+                               placeholder="Give your entry a meaningful title..." 
+                               maxlength="200" autofocus />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                        <small class="form-text text-muted">
+                            Make it descriptive so you can easily find this entry later.
+                        </small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Content" class="form-label">
+                            <i class="fas fa-align-left"></i> Your Story
+                        </label>
+                        <textarea asp-for="Content" class="form-control rich-text-editor" 
+                                  rows="15" 
+                                  placeholder="Start writing your thoughts here..."></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                        <small class="form-text text-muted">
+                            Express yourself freely - this is your private journal space.
+                        </small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save"></i> Save Entry
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-grid">
+                                <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="text-primary mb-3">
+                        <i class="fas fa-tips"></i> Writing Tips
+                    </h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success"></i> 
+                                    Be honest and authentic
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success"></i> 
+                                    Don't worry about perfect grammar
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success"></i> 
+                                    Write about emotions and feelings
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success"></i> 
+                                    Include details that matter to you
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-3 text-center">
+            <a asp-action="Index" class="text-decoration-none">
+                <i class="fas fa-arrow-left"></i> Back to My Diary
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <!-- TinyMCE Rich Text Editor - will be integrated in next step -->
+    <script>
+        // Basic form enhancement until TinyMCE is added
+        document.addEventListener('DOMContentLoaded', function() {
+            const titleInput = document.getElementById('Title');
+            const contentTextarea = document.getElementById('Content');
+            
+            // Auto-resize textarea
+            if (contentTextarea) {
+                contentTextarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+                });
+            }
+            
+            // Character counter for title
+            if (titleInput) {
+                const maxLength = titleInput.getAttribute('maxlength');
+                const counterDiv = document.createElement('div');
+                counterDiv.className = 'text-muted small text-end mt-1';
+                titleInput.parentNode.appendChild(counterDiv);
+                
+                function updateCounter() {
+                    const remaining = maxLength - titleInput.value.length;
+                    counterDiv.textContent = `${titleInput.value.length}/${maxLength} characters`;
+                    
+                    if (remaining < 20) {
+                        counterDiv.className = 'text-warning small text-end mt-1';
+                    } else {
+                        counterDiv.className = 'text-muted small text-end mt-1';
+                    }
+                }
+                
+                titleInput.addEventListener('input', updateCounter);
+                updateCounter();
+            }
+        });
+    </script>
+}
+
+<style>
+    .card {
+        border-radius: 15px;
+    }
+    
+    .btn {
+        border-radius: 25px;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+    }
+    
+    .rich-text-editor {
+        min-height: 300px;
+        resize: vertical;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+    
+    .list-unstyled li i {
+        margin-right: 0.5rem;
+    }
+    
+    .input-group-text {
+        background: transparent;
+        border-right: none;
+    }
+    
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        border-color: #86b7fe;
+    }
+</style>
