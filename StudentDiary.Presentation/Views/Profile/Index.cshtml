@@ -1,0 +1,191 @@
+@model StudentDiary.Services.DTOs.UserProfileDto
+
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+                    {
+                        <img src="@Model.ProfilePicturePath" alt="Profile Picture" class="profile-picture img-fluid rounded-circle shadow" />
+                    }
+                    else
+                    {
+                        <div class="profile-picture-placeholder rounded-circle mx-auto d-flex align-items-center justify-content-center">
+                            <i class="fas fa-user fa-3x text-muted"></i>
+                        </div>
+                    }
+                </div>
+                
+                <h4 class="mb-1">@Model.FirstName @Model.LastName</h4>
+                <p class="text-muted mb-3">@@@Model.Username</p>
+                
+                <div class="d-grid gap-2">
+                    <a asp-action="Edit" class="btn btn-primary">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-camera"></i> Profile Picture
+                </h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data" class="mb-3">
+                    <div class="mb-3">
+                        <label for="profilePicture" class="form-label">Choose new picture</label>
+                        <input type="file" class="form-control" id="profilePicture" name="profilePicture" accept="image/*" />
+                        <small class="form-text text-muted">
+                            Max file size: 5MB. Supported formats: JPG, JPEG, PNG, GIF.
+                        </small>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="fas fa-upload"></i> Upload Picture
+                        </button>
+                    </div>
+                </form>
+                
+                @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+                {
+                    <hr>
+                    <form asp-action="RemoveProfilePicture" method="post" class="d-grid">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to remove your profile picture?')">
+                            <i class="fas fa-trash"></i> Remove Picture
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle"></i> @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="fas fa-info-circle"></i> @TempData["InfoMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user"></i> Profile Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Full Name:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        @Model.FirstName @Model.LastName
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Username:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        @Model.Username
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Email:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        @Model.Email
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Member Since:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        @Model.DateCreated.ToString("MMMM dd, yyyy")
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-bar"></i> Account Statistics
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <div class="border-end">
+                            <h3 class="text-primary mb-1">
+                                <i class="fas fa-book"></i>
+                            </h3>
+                            <p class="text-muted mb-0">Total Diary Entries</p>
+                            <small class="text-muted">Coming Soon</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div>
+                            <h3 class="text-success mb-1">
+                                <i class="fas fa-calendar-check"></i>
+                            </h3>
+                            <p class="text-muted mb-0">Days Active</p>
+                            <small class="text-muted">@((DateTime.UtcNow - Model.DateCreated).Days) days</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+    
+    .profile-picture-placeholder {
+        width: 150px;
+        height: 150px;
+        background-color: #f8f9fa;
+        border: 2px dashed #dee2e6;
+    }
+    
+    .card {
+        border-radius: 15px;
+    }
+    
+    .btn {
+        border-radius: 25px;
+    }
+</style>
